@@ -1,1 +1,2 @@
 # Calorie-Map
+Michael Satumba
