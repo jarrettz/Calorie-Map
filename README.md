@@ -12,3 +12,8 @@ An app that tracks calories expended given a point a to point b like google maps
 ## Nice to Have Features
 - Different results outputted given gender as well as potential calories given if they say they were going to walk or run the inputted route
 
+## Wireframes
+
+![Basic UI](https://lh3.googleusercontent.com/keep-bbsk/AGk0z-PxRs4irMvqqNEltJXF3rrT5A-QDv7rKQk4XLEpjxUIZ2pWAbhdm-tSc-dk-SQm-9J-NPzAk70ToXEhAaDMyGuafNpT5_Ijkb3YZIg=s512)
+
+![Gender chosen and calorie output given gender](https://lh3.googleusercontent.com/keep-bbsk/AGk0z-MXbcge_Zvv8Q19JhN6M-V87xCFZAJBUMbBrtytI1Zk9Hi01_zJD6-hsBwKwmHoDyPX0XCC_exXnKMzTK9zmzCSQ2KaW-2Ijt1CPTM=s5122)
