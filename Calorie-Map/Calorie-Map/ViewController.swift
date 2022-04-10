@@ -29,3 +29,8 @@ class ViewController: UIViewController {
 
 }
 
+// TO DO
+/*
+ Link location 1 to search box 1
+ Link location 2 to search box 2
+ */
