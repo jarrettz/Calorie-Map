@@ -17,10 +17,12 @@ class ViewController: UIViewController {
         super.viewDidLayoutSubviews()
         mapView.frame = view.bounds
         let annotation = MKPointAnnotation()
+        let annotationTwo = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: 37.77, longitude: -122.43)
-        annotation.title = "SF"
+        annotationTwo.coordinate = CLLocationCoordinate2D(latitude: 38.77, longitude: -122.43)
         mapView.addAnnotation(annotation)
-        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 50000, longitudinalMeters: 50000)
+        mapView.addAnnotation(annotationTwo)
+        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 500000, longitudinalMeters: 500000)
         mapView.setRegion(region, animated: true)
     }
     
