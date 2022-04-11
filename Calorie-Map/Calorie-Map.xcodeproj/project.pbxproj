@@ -13,6 +13,7 @@
 		F880E8C227DB0B7300884B87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F880E8C027DB0B7300884B87 /* Main.storyboard */; };
 		F880E8C427DB0B7400884B87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F880E8C327DB0B7400884B87 /* Assets.xcassets */; };
 		F880E8C727DB0B7400884B87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F880E8C527DB0B7400884B87 /* LaunchScreen.storyboard */; };
+		F880E8CF2804ABC600884B87 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8CE2804ABC600884B87 /* ResultsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		F880E8C327DB0B7400884B87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F880E8C627DB0B7400884B87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F880E8C827DB0B7400884B87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F880E8CE2804ABC600884B87 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				F880E8C327DB0B7400884B87 /* Assets.xcassets */,
 				F880E8C527DB0B7400884B87 /* LaunchScreen.storyboard */,
 				F880E8C827DB0B7400884B87 /* Info.plist */,
+				F880E8CE2804ABC600884B87 /* ResultsViewController.swift */,
 			);
 			path = "Calorie-Map";
 			sourceTree = "<group>";
@@ -141,6 +144,7 @@
 				F880E8BF27DB0B7300884B87 /* ViewController.swift in Sources */,
 				F880E8BB27DB0B7300884B87 /* AppDelegate.swift in Sources */,
 				F880E8BD27DB0B7300884B87 /* SceneDelegate.swift in Sources */,
+				F880E8CF2804ABC600884B87 /* ResultsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

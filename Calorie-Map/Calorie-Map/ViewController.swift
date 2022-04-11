@@ -2,20 +2,27 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UISearchResultsUpdating {
+  
+    
     
     let mapView = MKMapView()
+    
+    let searchVC = UISearchController(searchResultsController: ResultsViewController())
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Calorie Map"
         view.addSubview(mapView)
+        searchVC.searchBar.backgroundColor = .secondarySystemBackground
+        searchVC.searchResultsUpdater = self
+        navigationItem.searchController = searchVC
 
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        mapView.frame = view.bounds
+        mapView.frame = CGRect(x: 0, y: view.safeAreaInsets.top, width: view.frame.size.width, height: view.frame.size.height - view.safeAreaInsets.top)
         let annotation = MKPointAnnotation()
         let annotationTwo = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: 37.77, longitude: -122.43)
@@ -24,6 +31,10 @@ class ViewController: UIViewController {
         mapView.addAnnotation(annotationTwo)
         let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 500000, longitudinalMeters: 500000)
         mapView.setRegion(region, animated: true)
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
     }
     
 
