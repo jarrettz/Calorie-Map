@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F381EC2E21EBC214E76028EC /* Pods_Calorie_Map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A876EB147A84E9A1821D5CE9 /* Pods_Calorie_Map.framework */; };
 		F880E8BB27DB0B7300884B87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8BA27DB0B7300884B87 /* AppDelegate.swift */; };
 		F880E8BD27DB0B7300884B87 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8BC27DB0B7300884B87 /* SceneDelegate.swift */; };
 		F880E8BF27DB0B7300884B87 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8BE27DB0B7300884B87 /* ViewController.swift */; };
@@ -14,9 +15,14 @@
 		F880E8C427DB0B7400884B87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F880E8C327DB0B7400884B87 /* Assets.xcassets */; };
 		F880E8C727DB0B7400884B87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F880E8C527DB0B7400884B87 /* LaunchScreen.storyboard */; };
 		F880E8CF2804ABC600884B87 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8CE2804ABC600884B87 /* ResultsViewController.swift */; };
+		F880E8D62805F3FE00884B87 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8D52805F3FE00884B87 /* LocationManager.swift */; };
+		F880E8D82805F57000884B87 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8D72805F57000884B87 /* SearchViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8641BE74E127E7F062F613C7 /* Pods-Calorie-Map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calorie-Map.release.xcconfig"; path = "Target Support Files/Pods-Calorie-Map/Pods-Calorie-Map.release.xcconfig"; sourceTree = "<group>"; };
+		A876EB147A84E9A1821D5CE9 /* Pods_Calorie_Map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calorie_Map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA22E1F96390667EB4526D9B /* Pods-Calorie-Map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calorie-Map.debug.xcconfig"; path = "Target Support Files/Pods-Calorie-Map/Pods-Calorie-Map.debug.xcconfig"; sourceTree = "<group>"; };
 		F880E8B727DB0B7300884B87 /* Calorie-Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Calorie-Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F880E8BA27DB0B7300884B87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F880E8BC27DB0B7300884B87 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -26,6 +32,8 @@
 		F880E8C627DB0B7400884B87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F880E8C827DB0B7400884B87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F880E8CE2804ABC600884B87 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
+		F880E8D52805F3FE00884B87 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		F880E8D72805F57000884B87 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +41,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F381EC2E21EBC214E76028EC /* Pods_Calorie_Map.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		446192F473ECC7F15F4B135A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A876EB147A84E9A1821D5CE9 /* Pods_Calorie_Map.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		70C2C0884388F359DD59E45D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CA22E1F96390667EB4526D9B /* Pods-Calorie-Map.debug.xcconfig */,
+				8641BE74E127E7F062F613C7 /* Pods-Calorie-Map.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		F880E8AE27DB0B7300884B87 = {
 			isa = PBXGroup;
 			children = (
 				F880E8B927DB0B7300884B87 /* Calorie-Map */,
 				F880E8B827DB0B7300884B87 /* Products */,
+				70C2C0884388F359DD59E45D /* Pods */,
+				446192F473ECC7F15F4B135A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,6 +89,8 @@
 				F880E8BA27DB0B7300884B87 /* AppDelegate.swift */,
 				F880E8BC27DB0B7300884B87 /* SceneDelegate.swift */,
 				F880E8BE27DB0B7300884B87 /* ViewController.swift */,
+				F880E8D52805F3FE00884B87 /* LocationManager.swift */,
+				F880E8D72805F57000884B87 /* SearchViewController.swift */,
 				F880E8C027DB0B7300884B87 /* Main.storyboard */,
 				F880E8C327DB0B7400884B87 /* Assets.xcassets */,
 				F880E8C527DB0B7400884B87 /* LaunchScreen.storyboard */,
@@ -77,9 +107,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F880E8CB27DB0B7400884B87 /* Build configuration list for PBXNativeTarget "Calorie-Map" */;
 			buildPhases = (
+				2B228D074E83D57CD3886AF0 /* [CP] Check Pods Manifest.lock */,
 				F880E8B327DB0B7300884B87 /* Sources */,
 				F880E8B427DB0B7300884B87 /* Frameworks */,
 				F880E8B527DB0B7300884B87 /* Resources */,
+				3810F00746D5E436B9E06018 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -136,13 +168,57 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2B228D074E83D57CD3886AF0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Calorie-Map-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3810F00746D5E436B9E06018 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Calorie-Map/Pods-Calorie-Map-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Calorie-Map/Pods-Calorie-Map-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Calorie-Map/Pods-Calorie-Map-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F880E8B327DB0B7300884B87 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F880E8D82805F57000884B87 /* SearchViewController.swift in Sources */,
 				F880E8BF27DB0B7300884B87 /* ViewController.swift in Sources */,
 				F880E8BB27DB0B7300884B87 /* AppDelegate.swift in Sources */,
+				F880E8D62805F3FE00884B87 /* LocationManager.swift in Sources */,
 				F880E8BD27DB0B7300884B87 /* SceneDelegate.swift in Sources */,
 				F880E8CF2804ABC600884B87 /* ResultsViewController.swift in Sources */,
 			);
@@ -288,6 +364,7 @@
 		};
 		F880E8CC27DB0B7400884B87 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA22E1F96390667EB4526D9B /* Pods-Calorie-Map.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -316,6 +393,7 @@
 		};
 		F880E8CD27DB0B7400884B87 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8641BE74E127E7F062F613C7 /* Pods-Calorie-Map.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

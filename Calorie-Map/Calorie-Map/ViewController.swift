@@ -1,6 +1,7 @@
 
 import UIKit
 import MapKit
+import FloatingPanel
 
 class ViewController: UIViewController, UISearchResultsUpdating {
   
@@ -17,6 +18,10 @@ class ViewController: UIViewController, UISearchResultsUpdating {
         searchVC.searchBar.backgroundColor = .secondarySystemBackground
         searchVC.searchResultsUpdater = self
         navigationItem.searchController = searchVC
+        
+        let panel = FloatingPanelController()
+        panel.set(contentViewController: SearchViewController())
+        panel.addPanel(toParent: self)
 
     }
     
