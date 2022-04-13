@@ -95,6 +95,45 @@ class ViewController: UIViewController {
 // Michael: - SearchInputViewDelegate
 
 extension ViewController: SearchInputViewDelegate {
+    
+    func searchBy(naturalLanguageQuery: String, region: MKCoordinateRegion, coordinates: CLLocationCoordinate2D, completion: @escaping (_ response: MKLocalSearch.Response?, _ error: NSError?) -> ()) {
+        
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = naturalLanguageQuery
+        request.region = region
+        
+        let search = MKLocalSearch(request: request)
+        search.start { (response, error) in
+            
+            guard let response = response else {
+                completion(nil, error! as NSError)
+                return
+            }
+        
+            completion(response, nil)
+        }
+    }
+
+    func handleSearch(withSearchText query: String) {
+        guard let coordinate = locationManager.location?.coordinate else { return }
+        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
+        
+        searchBy(naturalLanguageQuery: query, region: region, coordinates: coordinate) { (response, error) in
+            
+            guard let response = response else { return }
+            
+            response.mapItems.forEach({ (mapItem) in
+                let annotation = MKPointAnnotation()
+                annotation.title = mapItem.name
+                annotation.coordinate = mapItem.placemark.coordinate
+                self.mapView.addAnnotation(annotation)
+            })
+            
+//            self.searchInputView.searchResults = response.mapItems
+        }
+    }
+    
+    
     func animateCenterMapButton(expansionState: SearchInputView.ExpansionState, hideButton: Bool) {
         switch expansionState {
         case .NotExpanded:
@@ -125,54 +164,20 @@ extension ViewController: SearchInputViewDelegate {
                 }
             }
         }
-    }
-
+}
 }
 
 // Michael: - MapKit Helper Functions
 
 extension ViewController {
     
-//    func zoomToFit(selectedAnnotation: MKAnnotation?) {
-//        if mapView.annotations.count == 0 {
-//            return
-//        }
-//
-//        var topLeftCoordinate = CLLocationCoordinate2D(latitude: -90, longitude: 180)
-//        var bottomRightCoordinate = CLLocationCoordinate2D(latitude: 90, longitude: -180)
-//
-//        if let selectedAnnotation = selectedAnnotation {
-//            for annotation in mapView.annotations {
-//                if let userAnno = annotation as? MKUserLocation {
-//                    topLeftCoordinate.longitude = fmin(topLeftCoordinate.longitude, userAnno.coordinate.longitude)
-//                    topLeftCoordinate.latitude = fmax(topLeftCoordinate.latitude, userAnno.coordinate.latitude)
-//                    bottomRightCoordinate.longitude = fmax(bottomRightCoordinate.longitude, userAnno.coordinate.longitude)
-//                    bottomRightCoordinate.latitude = fmin(bottomRightCoordinate.latitude, userAnno.coordinate.latitude)
-//                }
-//
-//                if annotation.title == selectedAnnotation.title {
-//                    topLeftCoordinate.longitude = fmin(topLeftCoordinate.longitude, annotation.coordinate.longitude)
-//                    topLeftCoordinate.latitude = fmax(topLeftCoordinate.latitude, annotation.coordinate.latitude)
-//                    bottomRightCoordinate.longitude = fmax(bottomRightCoordinate.longitude, annotation.coordinate.longitude)
-//                    bottomRightCoordinate.latitude = fmin(bottomRightCoordinate.latitude, annotation.coordinate.latitude)
-//                }
-//            }
-//
-//            var region = MKCoordinateRegion(center: CLLocationCoordinate2DMake(topLeftCoordinate.latitude - (topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 0.65, topLeftCoordinate.longitude + (bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 0.65), span: MKCoordinateSpan(latitudeDelta: fabs(topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 3.0, longitudeDelta: fabs(bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 3.0))
-//
-//            region = mapView.regionThatFits(region)
-//            mapView.setRegion(region, animated: true)
-//        }
-
-    
     func centerMapOnUserLocation(shouldLoadAnnotations: Bool) {
         guard let coordinates = locationManager.location?.coordinate else { return }
         let coordinateRegion = MKCoordinateRegion(center: coordinates, latitudinalMeters: 20000, longitudinalMeters: 20000)
         mapView.setRegion(coordinateRegion, animated: true)
         
-//        if shouldLoadAnnotations {
-//            loadAnnotations(withSearchQuery: "Coffee Shops")
-//        }
+
+        
     }
 }
     
@@ -207,8 +212,3 @@ extension ViewController: CLLocationManagerDelegate {
 }
 
 
-// TO DO
-/*
- Link location 1 to search box 1
- Link location 2 to search box 2
- */

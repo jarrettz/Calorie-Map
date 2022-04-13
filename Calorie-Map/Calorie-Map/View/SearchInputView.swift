@@ -12,7 +12,7 @@ private let reuseIdentifier = "SearchCell"
 
 protocol SearchInputViewDelegate {
     func animateCenterMapButton(expansionState: SearchInputView.ExpansionState, hideButton: Bool)
-//    func handleSearch(withSearchText searchText: String)
+    func handleSearch(withSearchText searchText: String)
 //    func addPolyline(forDestinationMapItem destinationMapItem: MKMapItem)
 //    func selectedAnnotation(withMapItem mapItem: MKMapItem)
 }
@@ -29,6 +29,12 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     }
     
 // Michael: - UISearchBarDelegate
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text else { return }
+        delegate?.handleSearch(withSearchText: searchText)
+        dismissOnSearch()
+    }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         
@@ -52,14 +58,7 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = false
-        searchBar.endEditing(true)
-        animateInputView(targetPosition: self.frame.origin.y + 350) { (_) in
-            self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
-            self.expansionState = .PartiallyExpanded
-            
-        }
-//        dismissOnSearch()
+        dismissOnSearch()
     }
 
     
@@ -136,6 +135,16 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     }
 
     // Michael: - Helper Functions
+    
+    func dismissOnSearch() {
+        searchBar.showsCancelButton = false
+        searchBar.endEditing(true)
+        
+        animateInputView(targetPosition: self.frame.origin.y + 350) { (_) in
+            self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
+            self.expansionState = .PartiallyExpanded
+        }
+    }
     
 
     func animateInputView(targetPosition: CGFloat, completion: @escaping(Bool) -> ()) {
