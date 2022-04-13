@@ -10,6 +10,7 @@ class ViewController: UIViewController {
     
     var mapView: MKMapView!
     var locationManager: CLLocationManager!
+    var searchInputView: SearchInputView!
     
 //    let searchVC = UISearchController(searchResultsController: ResultsViewController())
 
@@ -18,7 +19,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         configureViewComponents()
         enableLocationServices()
-//        title = "Calorie Map"
+        title = "Calorie Map"
 //        view.addSubview(mapView)
 //        searchVC.searchBar.backgroundColor = .secondarySystemBackground
 //        searchVC.searchResultsUpdater = self
@@ -53,6 +54,14 @@ class ViewController: UIViewController {
     func configureViewComponents() {
         view.backgroundColor = .white
         configureMapView()
+        
+        searchInputView = SearchInputView()
+        
+//        searchInputView.delegate = self
+//        searchInputView.ViewController = self
+        
+        view.addSubview(searchInputView)
+        searchInputView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -(view.frame.height - 300), paddingRight: 0, width: 0, height: view.frame.height)
     }
     
     func configureMapView() {

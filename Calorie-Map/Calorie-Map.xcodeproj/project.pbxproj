@@ -17,8 +17,10 @@
 		F880E8CF2804ABC600884B87 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8CE2804ABC600884B87 /* ResultsViewController.swift */; };
 		F880E8D62805F3FE00884B87 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8D52805F3FE00884B87 /* LocationManager.swift */; };
 		F880E8D82805F57000884B87 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8D72805F57000884B87 /* SearchViewController.swift */; };
-		F880E8DC28067BDB00884B87 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8DB28067BDB00884B87 /* Extensions.swift */; };
 		F880E8DE28067E2A00884B87 /* LocationRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8DD28067E2A00884B87 /* LocationRequestController.swift */; };
+		F880E8E328074A6900884B87 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8E228074A6900884B87 /* Extensions.swift */; };
+		F880E8E528074B4C00884B87 /* SearchInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8E428074B4C00884B87 /* SearchInputView.swift */; };
+		F880E8E72807505E00884B87 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F880E8E62807505E00884B87 /* SearchCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,8 +38,10 @@
 		F880E8CE2804ABC600884B87 /* ResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		F880E8D52805F3FE00884B87 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		F880E8D72805F57000884B87 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		F880E8DB28067BDB00884B87 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F880E8DD28067E2A00884B87 /* LocationRequestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRequestController.swift; sourceTree = "<group>"; };
+		F880E8E228074A6900884B87 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = "Calorie-Map/Extensions.swift"; sourceTree = SOURCE_ROOT; };
+		F880E8E428074B4C00884B87 /* SearchInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputView.swift; sourceTree = "<group>"; };
+		F880E8E62807505E00884B87 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +122,8 @@
 		F880E8E0280748FD00884B87 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F880E8E428074B4C00884B87 /* SearchInputView.swift */,
+				F880E8E62807505E00884B87 /* SearchCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -125,7 +131,7 @@
 		F880E8E1280748FE00884B87 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				F880E8DB28067BDB00884B87 /* Extensions.swift */,
+				F880E8E228074A6900884B87 /* Extensions.swift */,
 			);
 			name = Utils;
 			path = "New Group1/Utils";
@@ -247,13 +253,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				F880E8DE28067E2A00884B87 /* LocationRequestController.swift in Sources */,
+				F880E8E72807505E00884B87 /* SearchCell.swift in Sources */,
 				F880E8D82805F57000884B87 /* SearchViewController.swift in Sources */,
 				F880E8BF27DB0B7300884B87 /* ViewController.swift in Sources */,
+				F880E8E328074A6900884B87 /* Extensions.swift in Sources */,
 				F880E8BB27DB0B7300884B87 /* AppDelegate.swift in Sources */,
+				F880E8E528074B4C00884B87 /* SearchInputView.swift in Sources */,
 				F880E8D62805F3FE00884B87 /* LocationManager.swift in Sources */,
 				F880E8BD27DB0B7300884B87 /* SceneDelegate.swift in Sources */,
 				F880E8CF2804ABC600884B87 /* ResultsViewController.swift in Sources */,
-				F880E8DC28067BDB00884B87 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
