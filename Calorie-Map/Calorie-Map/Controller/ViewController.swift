@@ -12,6 +12,13 @@ class ViewController: UIViewController {
     var locationManager: CLLocationManager!
     var searchInputView: SearchInputView!
     
+    let centerMapButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "location-arrow-flat").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleCenterLocation), for: .touchUpInside)
+        return button
+    }()
+    
 //    let searchVC = UISearchController(searchResultsController: ResultsViewController())
 
     // Michael: - Init
@@ -49,6 +56,12 @@ class ViewController: UIViewController {
 //        mapView.setRegion(region, animated: true)
 //    }
     
+    // Michael: - Selectors
+    
+    @objc func handleCenterLocation() {
+        centerMapOnUserLocation(shouldLoadAnnotations: false)
+    }
+    
     // Michael: - Helper Functions
     
     func configureViewComponents() {
@@ -57,11 +70,15 @@ class ViewController: UIViewController {
         
         searchInputView = SearchInputView()
         
-//        searchInputView.delegate = self
+        searchInputView.delegate = self
 //        searchInputView.ViewController = self
         
         view.addSubview(searchInputView)
         searchInputView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -(view.frame.height - 88), paddingRight: 0, width: 0, height: view.frame.height)
+        
+        view.addSubview(centerMapButton)
+        centerMapButton.anchor(top: nil, left: nil, bottom: searchInputView.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 16, width: 50, height: 50)
+
     }
     
     func configureMapView() {
@@ -73,6 +90,43 @@ class ViewController: UIViewController {
         view.addSubview(mapView)
         mapView.addConstraintsToFillView(view: view)
     }
+}
+
+// Michael: - SearchInputViewDelegate
+
+extension ViewController: SearchInputViewDelegate {
+    func animateCenterMapButton(expansionState: SearchInputView.ExpansionState, hideButton: Bool) {
+        switch expansionState {
+        case .NotExpanded:
+            UIView.animate(withDuration: 0.25) {
+                self.centerMapButton.frame.origin.y -= 250
+            }
+
+            if hideButton {
+                self.centerMapButton.alpha = 0
+            } else {
+                self.centerMapButton.alpha = 1
+            }
+
+        case .PartiallyExpanded:
+            
+            if hideButton {
+                self.centerMapButton.alpha = 0
+            } else {
+                UIView.animate(withDuration: 0.25) {
+                    self.centerMapButton.frame.origin.y += 250
+                }
+            }
+
+        case .FullyExpanded:
+            if !hideButton {
+                UIView.animate(withDuration: 0.25) {
+                    self.centerMapButton.alpha = 1
+                }
+            }
+        }
+    }
+
 }
 
 // Michael: - MapKit Helper Functions

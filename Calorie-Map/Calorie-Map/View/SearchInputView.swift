@@ -10,14 +10,14 @@ import MapKit
 
 private let reuseIdentifier = "SearchCell"
 
-//protocol SearchInputViewDelegate {
-//    func animateCenterMapButton(expansionState: SearchInputView.ExpansionState, hideButton: Bool)
+protocol SearchInputViewDelegate {
+    func animateCenterMapButton(expansionState: SearchInputView.ExpansionState, hideButton: Bool)
 //    func handleSearch(withSearchText searchText: String)
 //    func addPolyline(forDestinationMapItem destinationMapItem: MKMapItem)
 //    func selectedAnnotation(withMapItem mapItem: MKMapItem)
-//}
+}
 
-class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
+class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         return 10
@@ -27,6 +27,40 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SearchCell
         return cell
     }
+    
+// Michael: - UISearchBarDelegate
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+        if expansionState == .NotExpanded {
+            delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: true)
+            
+            animateInputView(targetPosition: self.frame.origin.y - 600) { (_) in
+                self.expansionState = .FullyExpanded
+            }
+        }
+        
+        if expansionState == .PartiallyExpanded {
+            delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: true)
+            
+            animateInputView(targetPosition: self.frame.origin.y - 350) { (_) in
+                self.expansionState = .FullyExpanded
+            }
+        }
+
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.endEditing(true)
+        animateInputView(targetPosition: self.frame.origin.y + 350) { (_) in
+            self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
+            self.expansionState = .PartiallyExpanded
+            
+        }
+//        dismissOnSearch()
+    }
 
     
     
@@ -35,12 +69,12 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
     var searchBar: UISearchBar!
     var tableView: UITableView!
     var expansionState: ExpansionState!
+    var delegate: SearchInputViewDelegate?
     
     enum ExpansionState {
         case NotExpanded
         case PartiallyExpanded
         case FullyExpanded
-        case ExpandToSearch
     }
 
     let indicatorView: UIView = {
@@ -69,16 +103,13 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
     @objc func handleSwipeGesture(sender: UISwipeGestureRecognizer) {
         if sender.direction == .up {
             if expansionState == .NotExpanded {
-//                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
-                
+                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
                 animateInputView(targetPosition: self.frame.origin.y - 250) { (_) in
                     self.expansionState = .PartiallyExpanded
                 }
             }
-            
             if expansionState == .PartiallyExpanded {
-//                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: true)
-                
+                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: true)
                 animateInputView(targetPosition: self.frame.origin.y - 350) { (_) in
                     self.expansionState = .FullyExpanded
                 }
@@ -90,15 +121,12 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
                 self.searchBar.showsCancelButton = false
                 
                 animateInputView(targetPosition: self.frame.origin.y + 350) { (_) in
-//                    self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
+                    self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
                     self.expansionState = .PartiallyExpanded
-                    
                 }
             }
-            
             if expansionState == .PartiallyExpanded {
-//                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
-                
+                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
                 animateInputView(targetPosition: self.frame.origin.y + 250) { (_) in
                     self.expansionState = .NotExpanded
                 }
@@ -131,7 +159,7 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
     func configureSearchBar() {
         searchBar = UISearchBar()
         searchBar.placeholder = "Where to?"
-//        searchBar.delegate = self
+        searchBar.delegate = self
         searchBar.barStyle = .black
         searchBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
 
