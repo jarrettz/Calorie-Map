@@ -34,6 +34,14 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     var searchBar: UISearchBar!
     var tableView: UITableView!
+    var expansionState: ExpansionState!
+    
+    enum ExpansionState {
+        case NotExpanded
+        case PartiallyExpanded
+        case FullyExpanded
+        case ExpandToSearch
+    }
 
     let indicatorView: UIView = {
         let view = UIView()
@@ -49,7 +57,7 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
         super.init(frame: frame)
         configureViewComponents()
         
-//        expansionState = .NotExpanded
+        expansionState = .NotExpanded
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,10 +66,56 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     // Michael: - Selectors
     
+    @objc func handleSwipeGesture(sender: UISwipeGestureRecognizer) {
+        if sender.direction == .up {
+            if expansionState == .NotExpanded {
+//                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
+                
+                animateInputView(targetPosition: self.frame.origin.y - 250) { (_) in
+                    self.expansionState = .PartiallyExpanded
+                }
+            }
+            
+            if expansionState == .PartiallyExpanded {
+//                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: true)
+                
+                animateInputView(targetPosition: self.frame.origin.y - 350) { (_) in
+                    self.expansionState = .FullyExpanded
+                }
+            }
+        } else {
+         
+            if expansionState == .FullyExpanded {
+                self.searchBar.endEditing(true)
+                self.searchBar.showsCancelButton = false
+                
+                animateInputView(targetPosition: self.frame.origin.y + 350) { (_) in
+//                    self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
+                    self.expansionState = .PartiallyExpanded
+                    
+                }
+            }
+            
+            if expansionState == .PartiallyExpanded {
+//                delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
+                
+                animateInputView(targetPosition: self.frame.origin.y + 250) { (_) in
+                    self.expansionState = .NotExpanded
+                }
+            }
+            
+        }
+    }
 
     // Michael: - Helper Functions
     
 
+    func animateInputView(targetPosition: CGFloat, completion: @escaping(Bool) -> ()) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            self.frame.origin.y = targetPosition
+        }, completion: completion)
+    }
+    
     func configureViewComponents() {
         backgroundColor = .white
 
@@ -71,7 +125,7 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
 
         configureSearchBar()
         configureTableView()
-//        configureGestureRecognizers()
+        configureGestureRecognizers()
     }
 //
     func configureSearchBar() {
@@ -95,6 +149,17 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource {
 
         addSubview(tableView)
         tableView.anchor(top: searchBar.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 100, paddingRight: 0, width: 0, height: 0)
+    }
+    
+    func configureGestureRecognizers() {
+        
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
+        swipeUp.direction = .up
+        addGestureRecognizer(swipeUp)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
+        swipeDown.direction = .down
+        addGestureRecognizer(swipeDown)
     }
 
 

@@ -61,7 +61,7 @@ class ViewController: UIViewController {
 //        searchInputView.ViewController = self
         
         view.addSubview(searchInputView)
-        searchInputView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -(view.frame.height - 300), paddingRight: 0, width: 0, height: view.frame.height)
+        searchInputView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: -(view.frame.height - 88), paddingRight: 0, width: 0, height: view.frame.height)
     }
     
     func configureMapView() {
