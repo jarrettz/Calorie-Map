@@ -143,7 +143,6 @@ class SearchCell: UITableViewCell {
         
         let rounding = round((distanceFromUser * 0.000621) * 100)
         
-        
         let caloriesAsString = String(rounding)
         locationCaloriesLabel.text = caloriesAsString + " " + "Calories"
     }

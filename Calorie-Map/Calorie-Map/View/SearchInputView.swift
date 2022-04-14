@@ -262,10 +262,4 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
         swipeDown.direction = .down
         addGestureRecognizer(swipeDown)
     }
-
-
-
-
-// Michael: - UITableViewDataSource/Delegate
-
 }
