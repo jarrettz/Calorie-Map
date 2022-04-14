@@ -14,7 +14,7 @@ protocol SearchInputViewDelegate {
     func animateCenterMapButton(expansionState: SearchInputView.ExpansionState, hideButton: Bool)
     func handleSearch(withSearchText searchText: String)
     func addPolyline(forDestinationMapItem destinationMapItem: MKMapItem)
-//    func selectedAnnotation(withMapItem mapItem: MKMapItem)
+    func selectedAnnotation(withMapItem mapItem: MKMapItem)
 }
 
 class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
@@ -39,6 +39,7 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard var searchResults = searchResults else { return }
         let selectedMapItem = searchResults[indexPath.row]
+        delegate?.selectedAnnotation(withMapItem: selectedMapItem)
         
         // FIXME: Refactor
         
@@ -60,6 +61,8 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
         let firstIndexPath = IndexPath(row: 0, section: 0)
         let cell = tableView.cellForRow(at: firstIndexPath) as! SearchCell
         cell.animateButtonIn()
+        
+        delegate?.addPolyline(forDestinationMapItem: selectedMapItem)
     }
     
 // Michael: - UISearchBarDelegate
@@ -105,6 +108,8 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     var delegate: SearchInputViewDelegate?
     var ViewController: ViewController?
     
+    var directionsEnabled = false
+    
     var searchResults: [MKMapItem]? {
         didSet {
             tableView.reloadData()
@@ -141,6 +146,12 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     // Michael: - Selectors
     
     @objc func handleSwipeGesture(sender: UISwipeGestureRecognizer) {
+        
+        if directionsEnabled {
+            print("Swiping disabled..")
+            return
+        }
+        
         if sender.direction == .up {
             if expansionState == .NotExpanded {
                 delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)
@@ -176,6 +187,18 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     }
 
     // Michael: - Helper Functions
+    
+    func disableViewInteraction(directionsEnabled: Bool) {
+        self.directionsEnabled = directionsEnabled
+        
+        if directionsEnabled {
+            tableView.allowsSelection = false
+            searchBar.isUserInteractionEnabled = false
+        } else {
+            tableView.allowsSelection = true
+            searchBar.isUserInteractionEnabled = true
+        }
+    }
     
     func dismissOnSearch() {
         searchBar.showsCancelButton = false

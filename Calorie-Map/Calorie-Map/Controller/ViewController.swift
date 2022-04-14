@@ -12,11 +12,21 @@ class ViewController: UIViewController {
     var locationManager: CLLocationManager!
     var searchInputView: SearchInputView!
     var route: MKRoute?
-
+    var selectedAnnotation: MKAnnotation?
+  
     let centerMapButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "location-arrow-flat").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleCenterLocation), for: .touchUpInside)
+        return button
+    }()
+    
+    let removeOverlaysButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "baseline_clear_white_36pt_1x").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.backgroundColor = .red
+        button.addTarget(self, action: #selector(handleRemoveOverlays), for: .touchUpInside)
+        button.alpha = 0
         return button
     }()
     
@@ -59,6 +69,28 @@ class ViewController: UIViewController {
     
     // Michael: - Selectors
     
+    @objc func handleRemoveOverlays() {
+     
+        
+        searchInputView.directionsEnabled = false
+
+        UIView.animate(withDuration: 0.5) {
+            self.removeOverlaysButton.alpha = 0
+            self.centerMapButton.alpha = 1
+        }
+
+        if mapView.overlays.count > 0 {
+            self.mapView.removeOverlay(mapView.overlays[0])
+            centerMapOnUserLocation(shouldLoadAnnotations: false)
+        }
+
+        searchInputView.disableViewInteraction(directionsEnabled: false)
+
+        guard let selectedAnno = self.selectedAnnotation else { return }
+        mapView.deselectAnnotation(selectedAnno, animated: true)
+
+    }
+    
     @objc func handleCenterLocation() {
         centerMapOnUserLocation(shouldLoadAnnotations: false)
     }
@@ -81,6 +113,11 @@ class ViewController: UIViewController {
         
         view.addSubview(centerMapButton)
         centerMapButton.anchor(top: nil, left: nil, bottom: searchInputView.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 16, paddingRight: 16, width: 50, height: 50)
+        
+        view.addSubview(removeOverlaysButton)
+        let dimension: CGFloat = 50
+        removeOverlaysButton.anchor(top: nil, left: view.leftAnchor, bottom: searchInputView.topAnchor, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 268, paddingRight: 0, width: dimension, height: dimension)
+        removeOverlaysButton.layer.cornerRadius = dimension / 2
 
     }
     
@@ -89,7 +126,7 @@ class ViewController: UIViewController {
         mapView.showsUserLocation = true
         mapView.delegate = self
         mapView.userTrackingMode = .follow
-//
+
         view.addSubview(mapView)
         mapView.addConstraintsToFillView(view: view)
     }
@@ -135,8 +172,23 @@ extension ViewController: SearchCellDelegate {
 
 extension ViewController: SearchInputViewDelegate {
     
+    func selectedAnnotation(withMapItem mapItem: MKMapItem) {
+        mapView.annotations.forEach { (annotation) in
+            if annotation.title == mapItem.name {
+                self.mapView.selectAnnotation(annotation, animated: true)
+                self.zoomToFit(selectedAnnotation: annotation)
+                self.selectedAnnotation = annotation
+
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.removeOverlaysButton.alpha = 1
+                    self.centerMapButton.alpha = 0
+                })
+            }
+        }
+    }
+    
     func addPolyline(forDestinationMapItem destinationMapItem: MKMapItem) {
-//        searchInputView.disableViewInteraction(directionsEnabled: true)
+        searchInputView.disableViewInteraction(directionsEnabled: true)
         
         generatePolyline(forDestinationMapItem: destinationMapItem)
     }
@@ -203,6 +255,39 @@ extension ViewController: SearchInputViewDelegate {
 // Michael: - MapKit Helper Functions
 
 extension ViewController {
+    
+    func zoomToFit(selectedAnnotation: MKAnnotation?) {
+        if mapView.annotations.count == 0 {
+            return
+        }
+        
+        var topLeftCoordinate = CLLocationCoordinate2D(latitude: -90, longitude: 180)
+        var bottomRightCoordinate = CLLocationCoordinate2D(latitude: 90, longitude: -180)
+        
+        if let selectedAnnotation = selectedAnnotation {
+            
+            for annotation in mapView.annotations {
+                if let userAnno = annotation as? MKUserLocation {
+                    topLeftCoordinate.longitude = fmin(topLeftCoordinate.longitude, userAnno.coordinate.longitude)
+                    topLeftCoordinate.latitude = fmax(topLeftCoordinate.latitude, userAnno.coordinate.latitude)
+                    bottomRightCoordinate.longitude = fmax(bottomRightCoordinate.longitude, userAnno.coordinate.longitude)
+                    bottomRightCoordinate.latitude = fmin(bottomRightCoordinate.latitude, userAnno.coordinate.latitude)
+                }
+                
+                if annotation.title == selectedAnnotation.title {
+                    topLeftCoordinate.longitude = fmin(topLeftCoordinate.longitude, annotation.coordinate.longitude)
+                    topLeftCoordinate.latitude = fmax(topLeftCoordinate.latitude, annotation.coordinate.latitude)
+                    bottomRightCoordinate.longitude = fmax(bottomRightCoordinate.longitude, annotation.coordinate.longitude)
+                    bottomRightCoordinate.latitude = fmin(bottomRightCoordinate.latitude, annotation.coordinate.latitude)
+                }
+            }
+            
+            var region = MKCoordinateRegion(center: CLLocationCoordinate2DMake(topLeftCoordinate.latitude - (topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 0.65, topLeftCoordinate.longitude + (bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 0.65), span: MKCoordinateSpan(latitudeDelta: fabs(topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 3.0, longitudeDelta: fabs(bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 3.0))
+            
+            region = mapView.regionThatFits(region)
+            mapView.setRegion(region, animated: true)
+        }
+    }
     
     func generatePolyline(forDestinationMapItem destinationMapItem: MKMapItem) {
         
