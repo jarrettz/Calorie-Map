@@ -114,23 +114,11 @@ extension ViewController: SearchInputViewDelegate {
         }
     }
 
-    func handleSearch(withSearchText query: String) {
-        guard let coordinate = locationManager.location?.coordinate else { return }
-        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
+    func handleSearch(withSearchText searchText: String) {
+        removeAnnotations()
         
-        searchBy(naturalLanguageQuery: query, region: region, coordinates: coordinate) { (response, error) in
-            
-            guard let response = response else { return }
-            
-            response.mapItems.forEach({ (mapItem) in
-                let annotation = MKPointAnnotation()
-                annotation.title = mapItem.name
-                annotation.coordinate = mapItem.placemark.coordinate
-                self.mapView.addAnnotation(annotation)
-            })
-            
-//            self.searchInputView.searchResults = response.mapItems
-        }
+        loadAnnotations(withSearchQuery: searchText)
+      
     }
     
     
@@ -171,14 +159,44 @@ extension ViewController: SearchInputViewDelegate {
 
 extension ViewController {
     
-    func centerMapOnUserLocation(shouldLoadAnnotations: Bool) {
-        guard let coordinates = locationManager.location?.coordinate else { return }
-        let coordinateRegion = MKCoordinateRegion(center: coordinates, latitudinalMeters: 20000, longitudinalMeters: 20000)
-        mapView.setRegion(coordinateRegion, animated: true)
+    func loadAnnotations(withSearchQuery query: String) {
         
-
+        guard let coordinate = locationManager.location?.coordinate else { return }
+        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
+        
+        searchBy(naturalLanguageQuery: query, region: region, coordinates: coordinate) { (response, error) in
+            
+            guard let response = response else { return }
+            
+            response.mapItems.forEach({ (mapItem) in
+                let annotation = MKPointAnnotation()
+                annotation.title = mapItem.name
+                annotation.coordinate = mapItem.placemark.coordinate
+                self.mapView.addAnnotation(annotation)
+            })
+        }
         
     }
+    
+    func centerMapOnUserLocation(shouldLoadAnnotations: Bool) {
+        guard let coordinates = locationManager.location?.coordinate else { return }
+        let coordinateRegion = MKCoordinateRegion(center: coordinates, latitudinalMeters: 2000, longitudinalMeters: 2000)
+        mapView.setRegion(coordinateRegion, animated: true)
+        
+        if shouldLoadAnnotations {
+            loadAnnotations(withSearchQuery: "Bar")
+        }
+    }
+    
+    func removeAnnotations() {
+        mapView.annotations.forEach { (annotation) in
+            if let annotation = annotation as? MKPointAnnotation {
+                mapView.removeAnnotation(annotation)
+            }
+        }
+    }
+    
+
 }
     
 // Michael: - CLLocationManagerDelegate
