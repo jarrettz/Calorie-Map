@@ -19,8 +19,8 @@ protocol SearchInputViewDelegate {
 
 class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        return 10
+        guard let searchResults = searchResults else { return 0 }
+        return searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -69,6 +69,12 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     var tableView: UITableView!
     var expansionState: ExpansionState!
     var delegate: SearchInputViewDelegate?
+    
+    var searchResults: [MKMapItem]? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     enum ExpansionState {
         case NotExpanded

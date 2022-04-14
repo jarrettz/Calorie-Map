@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     var mapView: MKMapView!
     var locationManager: CLLocationManager!
     var searchInputView: SearchInputView!
-    
+
     let centerMapButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "location-arrow-flat").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -174,6 +174,8 @@ extension ViewController {
                 annotation.coordinate = mapItem.placemark.coordinate
                 self.mapView.addAnnotation(annotation)
             })
+            
+            self.searchInputView.searchResults = response.mapItems
         }
         
     }
