@@ -1,7 +1,6 @@
 
 import UIKit
 import MapKit
-import FloatingPanel
 import CoreLocation
 
 class ViewController: UIViewController {
