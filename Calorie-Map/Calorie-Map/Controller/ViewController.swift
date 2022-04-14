@@ -11,6 +11,7 @@ class ViewController: UIViewController {
     var mapView: MKMapView!
     var locationManager: CLLocationManager!
     var searchInputView: SearchInputView!
+    var route: MKRoute?
 
     let centerMapButton: UIButton = {
         let button = UIButton(type: .system)
@@ -62,6 +63,8 @@ class ViewController: UIViewController {
         centerMapOnUserLocation(shouldLoadAnnotations: false)
     }
     
+
+    
     // Michael: - Helper Functions
     
     func configureViewComponents() {
@@ -84,7 +87,7 @@ class ViewController: UIViewController {
     func configureMapView() {
         mapView = MKMapView()
         mapView.showsUserLocation = true
-//        mapView.delegate = self
+        mapView.delegate = self
         mapView.userTrackingMode = .follow
 //
         view.addSubview(mapView)
@@ -92,12 +95,34 @@ class ViewController: UIViewController {
     }
 }
 
+// Michael: - MKMapViewDelegate
+
+extension ViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        
+        if let route = self.route {
+            let polyline = route.polyline
+            let lineRenderer = MKPolylineRenderer(overlay: polyline)
+            lineRenderer.strokeColor = .mainBlue()
+            lineRenderer.lineWidth = 3
+            return lineRenderer
+        }
+        
+        return MKOverlayRenderer()
+    }
+    
+}
+
 // Michael: - SearchCellDelegate
 
 extension ViewController: SearchCellDelegate {
     
     func getDirections(forMapItem mapItem: MKMapItem) {
-        mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking])
+        let source =  MKMapItem.forCurrentLocation()
+        let destination = mapItem
+
+        MKMapItem.openMaps(with: [source, destination], launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking])
     }
     
     func distanceFromUser(location: CLLocation) -> CLLocationDistance? {
@@ -109,6 +134,12 @@ extension ViewController: SearchCellDelegate {
 // Michael: - SearchInputViewDelegate
 
 extension ViewController: SearchInputViewDelegate {
+    
+    func addPolyline(forDestinationMapItem destinationMapItem: MKMapItem) {
+//        searchInputView.disableViewInteraction(directionsEnabled: true)
+        
+        generatePolyline(forDestinationMapItem: destinationMapItem)
+    }
     
     func searchBy(naturalLanguageQuery: String, region: MKCoordinateRegion, coordinates: CLLocationCoordinate2D, completion: @escaping (_ response: MKLocalSearch.Response?, _ error: NSError?) -> ()) {
         
@@ -172,6 +203,25 @@ extension ViewController: SearchInputViewDelegate {
 // Michael: - MapKit Helper Functions
 
 extension ViewController {
+    
+    func generatePolyline(forDestinationMapItem destinationMapItem: MKMapItem) {
+        
+        let request = MKDirections.Request()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = destinationMapItem
+        request.transportType = .walking
+        
+        let directions = MKDirections(request: request)
+        
+        directions.calculate { (response, error) in
+            
+            guard let response = response else { return }
+            
+            self.route = response.routes[0]
+            guard let polyline = self.route?.polyline else { return }
+            self.mapView.addOverlay(polyline)
+        }
+    }
     
     func loadAnnotations(withSearchQuery query: String) {
         

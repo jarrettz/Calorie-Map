@@ -18,25 +18,25 @@ class SearchCell: UITableViewCell {
     // Michael: - Properties
     
     var delegate: SearchCellDelegate?
-//
+
     var mapItem: MKMapItem? {
         didSet {
             configureCell()
         }
     }
     
-//    lazy var directionsButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-//        button.setTitle("Go", for: .normal)
-//        button.backgroundColor = .directionsGreen()
-//        button.setTitleColor(.white, for: .normal)
-//        button.addTarget(self, action: #selector(handleGetDirections), for: .touchUpInside)
-//        button.layer.cornerRadius = 5
-//        button.alpha = 0
-//        return button
-//    }()
-//
+    lazy var directionsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.setTitle("Go", for: .normal)
+        button.backgroundColor = .directionsGreen()
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(handleGetDirections), for: .touchUpInside)
+        button.layer.cornerRadius = 5
+        button.alpha = 0
+        return button
+    }()
+
     lazy var imageContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .mainPink()
@@ -98,11 +98,11 @@ class SearchCell: UITableViewCell {
         
         addSubview(locationCaloriesLabel)
         locationCaloriesLabel.anchor(top: nil, left: locationDistanceLabel.rightAnchor, bottom: imageContainerView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-//
-//        addSubview(directionsButton)
-//        let buttonDimension: CGFloat = 50
-//        directionsButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: buttonDimension, height: buttonDimension)
-//        directionsButton.centerY(inView: self)
+
+        addSubview(directionsButton)
+        let buttonDimension: CGFloat = 50
+        directionsButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: buttonDimension, height: buttonDimension)
+        directionsButton.centerY(inView: self)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -110,26 +110,26 @@ class SearchCell: UITableViewCell {
     }
     
     
-    // Michael: - Selectors
+//     Michael: - Selectors
     
-//    @objc func handleGetDirections() {
-//        guard let mapItem = self.mapItem else { return }
-//        delegate?.getDirections(forMapItem: mapItem)
-//    }
+    @objc func handleGetDirections() {
+        guard let mapItem = self.mapItem else { return }
+        delegate?.getDirections(forMapItem: mapItem)
+    }
     
     // Michael: - Helper Functions
     
-//    func animateButtonIn() {
-//        directionsButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
-//        
-//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
-//            self.directionsButton.alpha = 1
-//            self.directionsButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-//        }) { (_) in
-//            self.directionsButton.transform = .identity
-//        }
-//    }
-//    
+    func animateButtonIn() {
+        directionsButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
+            self.directionsButton.alpha = 1
+            self.directionsButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { (_) in
+            self.directionsButton.transform = .identity
+        }
+    }
+ 
     func configureCell() {
         locationTitleLabel.text = mapItem?.name
 
@@ -141,7 +141,7 @@ class SearchCell: UITableViewCell {
         let distanceAsString = distanceFormatter.string(fromDistance: distanceFromUser)
         locationDistanceLabel.text = distanceAsString
         
-        var rounding = round((distanceFromUser * 0.000621) * 100)
+        let rounding = round((distanceFromUser * 0.000621) * 100)
         
         
         let caloriesAsString = String(rounding)

@@ -13,7 +13,7 @@ private let reuseIdentifier = "SearchCell"
 protocol SearchInputViewDelegate {
     func animateCenterMapButton(expansionState: SearchInputView.ExpansionState, hideButton: Bool)
     func handleSearch(withSearchText searchText: String)
-//    func addPolyline(forDestinationMapItem destinationMapItem: MKMapItem)
+    func addPolyline(forDestinationMapItem destinationMapItem: MKMapItem)
 //    func selectedAnnotation(withMapItem mapItem: MKMapItem)
 }
 
@@ -34,6 +34,32 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
             cell.mapItem = searchResults[indexPath.row]
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard var searchResults = searchResults else { return }
+        let selectedMapItem = searchResults[indexPath.row]
+        
+        // FIXME: Refactor
+        
+        if expansionState == .FullyExpanded {
+            self.searchBar.endEditing(true)
+            self.searchBar.showsCancelButton = false
+            
+            animateInputView(targetPosition: self.frame.origin.y + 350) { (_) in
+                self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: true)
+                self.expansionState = .PartiallyExpanded
+                
+            }
+        }
+        
+        searchResults.remove(at: indexPath.row)
+        searchResults.insert(selectedMapItem, at: 0)
+        self.searchResults = searchResults
+        
+        let firstIndexPath = IndexPath(row: 0, section: 0)
+        let cell = tableView.cellForRow(at: firstIndexPath) as! SearchCell
+        cell.animateButtonIn()
     }
     
 // Michael: - UISearchBarDelegate
