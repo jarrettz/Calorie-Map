@@ -25,6 +25,14 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SearchCell
+        
+        if let controller = ViewController {
+            cell.delegate = controller
+        }
+        
+        if let searchResults = searchResults {
+            cell.mapItem = searchResults[indexPath.row]
+        }
         return cell
     }
     
@@ -69,6 +77,7 @@ class SearchInputView: UIView, UITableViewDelegate, UITableViewDataSource, UISea
     var tableView: UITableView!
     var expansionState: ExpansionState!
     var delegate: SearchInputViewDelegate?
+    var ViewController: ViewController?
     
     var searchResults: [MKMapItem]? {
         didSet {

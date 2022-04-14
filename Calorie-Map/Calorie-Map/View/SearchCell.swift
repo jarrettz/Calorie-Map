@@ -8,22 +8,22 @@
 import UIKit
 import MapKit
 
-//protocol SearchCellDelegate {
-//    func distanceFromUser(location: CLLocation) -> CLLocationDistance?
-//    func getDirections(forMapItem mapItem: MKMapItem)
-//}
+protocol SearchCellDelegate {
+    func distanceFromUser(location: CLLocation) -> CLLocationDistance?
+    func getDirections(forMapItem mapItem: MKMapItem)
+}
 
 class SearchCell: UITableViewCell {
     
     // Michael: - Properties
     
-//    var delegate: SearchCellDelegate?
+    var delegate: SearchCellDelegate?
 //
-//    var mapItem: MKMapItem? {
-//        didSet {
-//            configureCell()
-//        }
-//    }
+    var mapItem: MKMapItem? {
+        didSet {
+            configureCell()
+        }
+    }
     
 //    lazy var directionsButton: UIButton = {
 //        let button = UIButton(type: .system)
@@ -59,7 +59,6 @@ class SearchCell: UITableViewCell {
     let locationTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.text = "Park"
         return label
     }()
 
@@ -67,7 +66,6 @@ class SearchCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "0.2 mi"
         return label
     }()
     
@@ -99,7 +97,7 @@ class SearchCell: UITableViewCell {
         locationDistanceLabel.anchor(top: nil, left: imageContainerView.rightAnchor, bottom: imageContainerView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(locationCaloriesLabel)
-        locationCaloriesLabel.anchor(top: imageContainerView.topAnchor, left: locationDistanceLabel.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        locationCaloriesLabel.anchor(top: nil, left: locationDistanceLabel.rightAnchor, bottom: imageContainerView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
 //
 //        addSubview(directionsButton)
 //        let buttonDimension: CGFloat = 50
@@ -110,6 +108,7 @@ class SearchCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     // Michael: - Selectors
     
@@ -131,15 +130,21 @@ class SearchCell: UITableViewCell {
 //        }
 //    }
 //    
-//    func configureCell() {
-//        locationTitleLabel.text = mapItem?.name
-//
-//        let distanceFormatter = MKDistanceFormatter()
-//        distanceFormatter.unitStyle = .abbreviated
-//        
-//        guard let mapItemLocation = mapItem?.placemark.location else { return }
-//        guard let distanceFromUser = delegate?.distanceFromUser(location: mapItemLocation) else { return }
-//        let distanceAsString = distanceFormatter.string(fromDistance: distanceFromUser)
-//        locationDistanceLabel.text = distanceAsString
-//    }
+    func configureCell() {
+        locationTitleLabel.text = mapItem?.name
+
+        let distanceFormatter = MKDistanceFormatter()
+        distanceFormatter.unitStyle = .abbreviated
+
+        guard let mapItemLocation = mapItem?.placemark.location else { return }
+        guard let distanceFromUser = delegate?.distanceFromUser(location: mapItemLocation) else { return }
+        let distanceAsString = distanceFormatter.string(fromDistance: distanceFromUser)
+        locationDistanceLabel.text = distanceAsString
+        
+        var rounding = round((distanceFromUser * 0.000621) * 100)
+        
+        
+        let caloriesAsString = String(rounding)
+        locationCaloriesLabel.text = caloriesAsString + " " + "Calories"
+    }
 }
