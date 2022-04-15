@@ -130,6 +130,10 @@ extension ViewController: MKMapViewDelegate {
 // Michael: - SearchCellDelegate
 
 extension ViewController: SearchCellDelegate {
+//    func getDirections(forMapItem mapItem: MKMapItem) {
+//        print("hello cdvdsbvdfjv")
+//    }
+    
     
     func getDirections(forMapItem mapItem: MKMapItem) {
         let source =  MKMapItem.forCurrentLocation()
@@ -281,6 +285,11 @@ extension ViewController {
             self.route = response.routes[0]
             guard let polyline = self.route?.polyline else { return }
             self.mapView.addOverlay(polyline)
+            
+            let source =  MKMapItem.forCurrentLocation()
+            let destination = destinationMapItem
+
+            MKMapItem.openMaps(with: [source, destination], launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking])
         }
     }
     
@@ -357,4 +366,4 @@ extension ViewController: CLLocationManagerDelegate {
 }
 
 // TO DO
-// Open apple maps when click on go button
+// Open apple maps when click on go button line 138
