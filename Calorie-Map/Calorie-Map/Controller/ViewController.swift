@@ -286,10 +286,11 @@ extension ViewController {
             guard let polyline = self.route?.polyline else { return }
             self.mapView.addOverlay(polyline)
             
-            let source =  MKMapItem.forCurrentLocation()
-            let destination = destinationMapItem
-
-            MKMapItem.openMaps(with: [source, destination], launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking])
+                let source =  MKMapItem.forCurrentLocation()
+                let destination = destinationMapItem
+                
+                MKMapItem.openMaps(with: [source, destination], launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking])
+        
         }
     }
     

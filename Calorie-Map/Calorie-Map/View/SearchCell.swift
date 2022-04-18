@@ -112,15 +112,11 @@ class SearchCell: UITableViewCell {
     
 //     Michael: - Selectors
     
-    func hello() {
-        print("hello")
-    }
-    
     @objc func handleGetDirections() {
         print("hello")
-        guard let mapItem = self.mapItem else { return }
-        delegate?.getDirections(forMapItem: mapItem)
-        
+//        guard let mapItem = self.mapItem else { return }
+//        delegate?.getDirections(forMapItem: mapItem)
+//        
     }
     
     // Michael: - Helper Functions
